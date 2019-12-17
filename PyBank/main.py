@@ -5,18 +5,32 @@ import os
 import csv
 
 #Path to collect bank data
-bankCSV = os.path.join('..', 'PyBank', 'budget_data.csv')
+bank_csv = os.path.join("..", "PyBank", "budget_data.csv")
 
-#Read in the CSV file
-with open(bankCSV, newline='') as csvfile:
+def print_data(bankData):
+    date = str(bankData[0])
+    profit = int(bankData[1])
 
-    csvreader = csv.reader(csvfile, delimiter=',')
+    print(f"{date} {profit}")
 
-    csv_header = next(csvreader)
 
-    months = string.count(column[0])
-    sum = sum(int(column[1].replace(',', '')) for column in csvreader)
+#Open and read the csv
+with open(bank_csv, newline="") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    
+    #Read the header row first
+    header = next(csvfile)
+    print(f"Header: {header}")
 
-    print(months)
-    print(f"Total: $" + str(sum))
+    for row in csvreader:
+        print_data(row)
 
+print("")
+print("Financial Analysis")
+print("------------------")
+print(f"Total Months: ")
+print(f"Total: ")
+print(f"Average Change: ")
+print(f"Greatest Increase in Profits: ")
+print(f"Greatest Decrease in Profits: ")
+    
