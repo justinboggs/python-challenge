@@ -1,45 +1,61 @@
 #Importing os module
 import os
 
-#Module for reading csv files
+#Import module for reading csv files
 import csv
 
 #Path to collect bank data
 bank_csv = os.path.join("budget_data.csv")
 
+#create variables for data in csv file
 date = []
 profit = []
 
 #Open and read the csv
-with open(bank_csv, newline="") as csvfile:
+with open(bank_csv, newline="") as csv_file:
     #Split the data on commas
-    csvreader = csv.reader(csvfile, delimiter=",")
+    csv_in = csv.reader(csv_file, delimiter=",")
     #Set the header row
-    header = next(csvfile)
+    header = next(csv_file)
     
-    for row in csvreader:       
+    #loop through file and assign data to the proper variables based on columns
+    for row in csv_in:       
         date.append(row[0])
+        #set profit to an integer
         profit.append(int(row[1]))
+        #define the daily change variable and set its placement
         change = [profit[i+1] - profit[i] for i in range(len(profit)-1)]
 
-#Define variables
+#define total months
 total_months = len(date)
+#define total profit
 total_profit = sum(profit)
-total_change = round(sum(change) / len(change),2)
+#define average change
+avg_change = round(sum(change) / len(change),2)
+#define max daily change
 max_change = max(change)
+#find month corresponding to max daily change
+max_month = date[change.index(max_change)+1]
+#define min daily change
 min_change = min(change)
+#find month corresponding to min daily change
+min_month = date[change.index(min_change)+1]
 
-output = os.path.join("bank_output.txt")
+#path and file name to save data
+output = os.path.join("budget_output.txt")
 
-with open(output, "w") as writefile:
-    writefile.writelines("Financial Analysis\n")
-    writefile.writelines("------------------\n")
-    writefile.writelines(f"Total Months: {str(total_months)}\n")
-    writefile.writelines(f"Total: $ {str(total_profit)}\n")
-    writefile.writelines(f"Average Change: $ {str(total_change)}\n")
-    writefile.writelines(f"Greatest Increase in Profits: {str(max_change)}\n")
-    writefile.writelines(f"Greatest Decrease in Profits: {str(min_change)}")
+#Print and save the output to a .txt file
+with open(output, "w") as csv_out:
+    csv_out.write(" \n")
+    csv_out.write("Financial Analysis\n")
+    csv_out.write("------------------\n")
+    csv_out.write(f"Total Months: {str(total_months)}\n")
+    csv_out.write(f"Total: $ {str(total_profit)}\n")
+    csv_out.write(f"Average Change: $ {str(avg_change)}\n")
+    csv_out.write(f"Greatest Increase in Profits: {max_month} ${str(max_change)}\n")
+    csv_out.write(f"Greatest Decrease in Profits: {min_month} ${str(min_change)}\n")
+    csv_out.write(" ")
 
-with open(output, "r") as readfile:
-        print(readfile.read())
-        
+#Print the output to the terminal
+with open(output, "r") as csv_read:
+        print(csv_read.read())
