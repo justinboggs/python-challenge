@@ -1,19 +1,19 @@
-#Importing os module
+#import os module
 import os
 
-#Import module for reading csv files
+#import csv module
 import csv
 
-#Path to collect bank data
+#path to collect bank data
 bank_csv = os.path.join("budget_data.csv")
 
 #create variables for data in csv file
 date = []
 profit = []
 
-#Open and read the csv
+#open and read the csv
 with open(bank_csv, newline="") as csv_file:
-    #Split the data on commas
+    #split the data on commas
     csv_in = csv.reader(csv_file, delimiter=",")
     #Set the header row
     header = next(csv_file)
@@ -23,7 +23,7 @@ with open(bank_csv, newline="") as csv_file:
         date.append(row[0])
         #set profit to an integer
         profit.append(int(row[1]))
-        #define the daily change variable and set its placement
+        #define the monthly change variable and set its placement
         change = [profit[i+1] - profit[i] for i in range(len(profit)-1)]
 
 #define total months
@@ -32,13 +32,13 @@ total_months = len(date)
 total_profit = sum(profit)
 #define average change
 avg_change = round(sum(change) / len(change),2)
-#define max daily change
+#define max monthly change
 max_change = max(change)
-#find month corresponding to max daily change
+#find month corresponding to max monthly change
 max_month = date[change.index(max_change)+1]
-#define min daily change
+#define min monthly change
 min_change = min(change)
-#find month corresponding to min daily change
+#find month corresponding to min monthly change
 min_month = date[change.index(min_change)+1]
 
 #path and file name to save data
