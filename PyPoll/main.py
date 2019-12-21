@@ -60,7 +60,7 @@ top = winner[0]
 #total_votes = len(voter_id)
 
 #path and file name to save data
-output = os.path.join("voter_output.txt")
+output = os.path.join("election_results.txt")
 
 #Print and save the output to a .txt file
 with open(output, "w") as csv_out:
