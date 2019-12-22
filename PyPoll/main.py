@@ -12,8 +12,11 @@ polls = {}
 
 #create empty lists to hold data 
 total_votes = []
-county = []
 candidate = []
+num_votes = []
+vote_percent = []
+
+#set total votes equal to zero
 total_votes = 0
 
 #open and read the csv
@@ -23,7 +26,7 @@ with open(vote_csv, newline="") as csv_file:
     #Set the header row
     header = next(csv_file)
     
-    #loop through file and assign data to the proper variables based on columns
+    #loop through data and count total votes
     for row in csv_in:       
         total_votes += 1
         if row[2] in polls.keys():
@@ -31,33 +34,28 @@ with open(vote_csv, newline="") as csv_file:
         else:
             polls[row[2]] = 1
 
-#create empty lists for candidates and vote counts
-candidates = []
-num_votes = []
-
 #takes dictionary key and values and places them into lists
-for key, value in polls.items():
-    candidates.append(key)
-    num_votes.append(value)
+for j, k in polls.items():
+    candidate.append(j)
+    num_votes.append(k)
 
-#create vote percentage list
-vote_percent = []
-for n in num_votes:
-    vote_percent.append(round(n/total_votes*100, 1))
+#calculate vote percentage 
+for i in num_votes:
+    vote_percent.append(round(i/total_votes*100, 1))
 
 #zip candidates, vote total, and vote percentage into list
-final_count = list(zip(candidates, num_votes, vote_percent))
+final_count = list(zip(candidate, num_votes, vote_percent))
 
 #create list to hold winner
 winner = []
 
+#find the election winner by finding max vote count
 for name in final_count:
     if max(num_votes) == name[1]:
         winner.append(name[0])
 
-top = winner[0]
-
-#total_votes = len(voter_id)
+#declare variable for holding election winner
+first_place = winner[0]
 
 #path and file name to save data
 output = os.path.join("election_results.txt")
@@ -69,10 +67,11 @@ with open(output, "w") as csv_out:
     csv_out.write("------------------------\n")
     csv_out.write(f"Total Votes: {total_votes}\n")
     csv_out.write("------------------------\n")
-    for entry in final_count:
-        csv_out.write(entry[0] + ": " + str(entry[2]) + "% (" + str(entry[1]) + ")\n")
+    #Loop to print out all vote-getters from the final_count list.
+    for vote_getter in final_count:
+        csv_out.write(f"{vote_getter[0]}: {vote_getter[2]:.3f}% ({vote_getter[1]})\n")
     csv_out.write("------------------------\n")
-    csv_out.write(f"Winner: {top} \n") 
+    csv_out.write(f"Winner: {first_place} \n") 
     csv_out.write("------------------------\n")
 
 #Print the output to the terminal
